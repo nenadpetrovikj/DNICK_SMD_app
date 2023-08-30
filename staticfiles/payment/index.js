@@ -42,7 +42,7 @@ form.addEventListener('submit', function(event) {
 
     $.ajax({
         type: "POST",
-        url: 'http://127.0.0.1:8000/orders/add/',
+        url: 'https://web-production-e9c3b.up.railway.app/orders/add/',
         data: {
             full_name: firstname + ' ' + lastname,
             phone_number: phoneNumber,
@@ -85,7 +85,7 @@ form.addEventListener('submit', function(event) {
                         // execution. Set up a webhook or plugin to listen for the
                         // payment_intent.succeeded event that handles any business critical
                         // post-payment actions.
-                        window.location.replace("http://127.0.0.1:8000/payment/orderplaced/");
+                        window.location.replace("https://web-production-e9c3b.up.railway.app/payment/orderplaced/");
                     }
                 }
             });
