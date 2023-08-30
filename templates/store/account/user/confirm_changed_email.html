@@ -1,0 +1,15 @@
+{% autoescape off %}
+Hello,
+
+You have successfully changed your old email address:
+
+{{ old_email }}
+
+With the new email address:
+
+{{ user.email }}
+
+Click the link below to verify the new email address:
+
+http://{{ domain }}{% url 'account:activate' flag=flag uidb64=uid token=token %}
+{% endautoescape %}

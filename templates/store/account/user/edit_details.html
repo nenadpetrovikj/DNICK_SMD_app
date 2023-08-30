@@ -1,0 +1,142 @@
+{% extends "../../base.html" %}
+{% load static %}
+{% block title %}Edit Profile{% endblock %}
+{% block content %}
+
+<style>
+
+
+    .account-form input:focus,
+    .account-form select:focus {
+        border-color: #1497ff;
+        box-shadow: none;
+    }
+
+    .form-control {
+        border: 1px solid rgba(86, 48, 80, 0.5);
+        text-align: center;
+    }
+</style>
+
+<main class="container">
+    <div class="row justify-content-center text-center" style="color: #563050;">
+        <div class="col-6 my-4">
+
+            <form class="account-form px-4" method="post" enctype="multipart/form-data">
+
+                <h3 class="fw-bold mb-5">Account Details</h3>
+                {% if user_form.is_valid %}
+                <div class="mt-4 mb-5">
+                    {% if changed_email %}
+                    <p>A link to verify your new email address has been sent.</p>
+                    {% endif %}
+                    <div class="alert alert-success" role="alert">
+                        Details successfully updated!
+                    </div>
+                </div>
+                {% elif user_form.errors %}
+                <div class="mt-4 mb-5">
+                    <p>Please correct the following errors:</p>
+                    {% for field in user_form %}
+                        {% if field.errors %}
+                        <div class="alert alert-primary" role="alert">
+                            {{ field.label }}: {{ field.errors|striptags }}
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                    </div>
+                {% else %}
+                {% endif %}
+
+                {% csrf_token %}
+                <div class="my-3">
+                    <h4 class="mb-3">Personal Details</h4>
+                    <label style="margin-bottom: 4px;" class="fs-6">{{ user_form.email.label}}
+                        <span class="text-muted small">({{ user_form.email.help_text }})</span>
+                    </label>
+
+                    <div class="d-flex mb-3">
+                        {{ user_form.email }}
+                        {% if activated_email %}
+                        <svg class="bi ms-3 align-self-center" width="16" height="16"><use xlink:href="#check" fill="green"/></svg>
+                        {% else %}
+                        <svg class="bi ms-3 align-self-center" width="16" height="16"><use xlink:href="#x-circle" fill="red"/></svg>
+                        {% endif %}
+                    </div>
+                    
+                    <label style="margin-bottom: 4px;" class="fs-6">{{ user_form.username.label}}
+                        <span class="text-muted small">({{ user_form.username.help_text }})</span>
+                    </label>
+                    {{ user_form.username }}
+                </div>
+
+                <div style="border-bottom: 1px solid #563050;" class="mb-4 pb-5">
+                    <h4 class="mt-5 mb-3">Billing Details</h4>
+                    <label style="margin-bottom: 4px;" class="fs-6">{{ user_form.first_name.label}}
+                        <span class="text-muted small">({{ user_form.first_name.help_text }})</span>
+                    </label>
+                    {{ user_form.first_name }}
+
+                    <label style="margin-bottom: 4px;" class="fs-6">{{ user_form.last_name.label}}
+                        <span class="text-muted small">({{ user_form.last_name.help_text }})</span>
+                    </label>
+                    {{ user_form.last_name }}
+                    
+                    <label style="margin-bottom: 4px;" class="fs-6">{{ user_form.phone_number.label}}
+                        <span class="text-muted small">({{ user_form.phone_number.help_text }})</span>
+                    </label>
+                    {{ user_form.phone_number }}
+
+                    <label style="margin-bottom: 4px;" class="fs-6">{{ user_form.country.label}}
+                        <span class="text-muted small">(Optional)</span>
+                    </label>
+                    {{ user_form.country }}
+
+                    <label style="margin-bottom: 4px;" class="fs-6">{{ user_form.city.label}}
+                        <span class="text-muted small">({{ user_form.city.help_text }})</span>
+                    </label>
+                    {{ user_form.city }}
+
+                    <label style="margin-bottom: 4px;" class="fs-6">{{ user_form.postcode.label}}
+                        <span class="text-muted small">({{ user_form.postcode.help_text }})</span>
+                    </label>
+                    {{ user_form.postcode }}
+
+                    <label style="margin-bottom: 4px;" class="fs-6">{{ user_form.address_line_1.label}}
+                        <span class="text-muted small">({{ user_form.address_line_1.help_text }})</span>
+                    </label>
+                    {{ user_form.address_line_1 }}
+
+                    <label style="margin-bottom: 4px;" class="fs-6">{{ user_form.address_line_2.label}}
+                        <span class="text-muted small">({{ user_form.address_line_2.help_text }})</span>
+                    </label>
+                    {{ user_form.address_line_2 }}
+
+                    <button class="btn btn-block py-2 mt-4 fw-bold w-100" style="background-color: #563050; color: white; border-radius: 45px;" type="submit" value="Save changes">Save Changes</button>
+                </div>
+            </form>
+
+            <form class="account-form px-4" action="{% url "account:delete_user" %}" method="post">
+                {% csrf_token %}
+                <h3 class="pt-1">Delete Account</h3>
+                <p>Are you sure you want to delete your account?</p>
+                <button type="submit" role="button" class="btn btn-danger btn-block py-2 mt-4 mb-3 fw-bold w-100" style="border-radius: 45px;">Delete</button>
+            </form>
+
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var categoriesElement = document.getElementById("categories");
+            var footerElement = document.getElementById("footer");
+
+            categoriesElement.style.setProperty("margin-bottom", "0", "important");
+            footerElement.style.setProperty("margin-top", "0", "important");
+
+        });
+    </script>
+{%endblock%}

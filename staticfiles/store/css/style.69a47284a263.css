@@ -1,0 +1,36 @@
+.image-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+  }
+  
+  .logo-image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 200px;
+    width: 200px;
+  }
+
+  .dropdown-large { 
+    padding: 1rem; 
+  }
+
+  .margin-bottom-50 {
+    margin-bottom: 50px;
+  }
+
+  .filter-item {
+    cursor: pointer;
+  }
+
+  /* ============ desktop view ============ */
+  @media all and (min-width: 992px) {
+    .dropdown-large {
+      min-width: 500px;
+    }
+  }	
+  /* ============ desktop view .end// ============ */
+

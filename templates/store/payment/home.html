@@ -1,0 +1,134 @@
+{% extends "../base.html" %}
+{% load static %}
+{% block title %}Payment{% endblock %}
+{% block content %}
+
+<style>
+
+  .account-form input:focus {
+    border-color: #1497ff;
+    box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075), 0 0 0px rgba(255, 0, 0, 0.6);
+  }
+
+  .container {
+    color: #563050;
+  }
+
+  .form-control {
+        border: 1px solid rgba(86, 48, 80, 0.5);
+        text-align: center;
+    }
+</style>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="d-flex align-items-center">
+        <div class="container my-1">
+          <div class="row text-center">
+            <div id="payment-form" class="col-12 col-lg-6 mx-auto">
+              <h3 class="mb-5 fw-bold">Billing Details</h3>
+
+              <!-- Error messages in this element -->
+              <div id="card-errors" class="a" role="alert"></div>
+              <form>
+                <div style="border-bottom: 1px solid rgba(86, 48, 80, 0.6); padding-bottom: 35px;" class="mb-4">
+                  <div class="row g-3 justify-content-center text-center">
+                    <div class="d-none">
+                      {{ form.email }}
+                    </div>
+                    <div class="col-sm-7">
+                      <label style="margin-bottom: 4px;" class="fs-6">{{ form.first_name.label }}
+                          <span class="text-muted small">({{ form.first_name.help_text }})</span>
+                      </label>
+                      {{ form.first_name }}
+                      <div class="invalid-feedback">
+                        First name is required.
+                      </div>
+                    </div>
+                    <div class="col-sm-7">
+                      <label style="margin-bottom: 4px;" class="fs-6">{{ form.last_name.label }}
+                          <span class="text-muted small">({{ form.last_name.help_text }})</span>
+                      </label>
+                      {{ form.last_name }}
+                      <div class="invalid-feedback">
+                        Last name is required.
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <label style="margin-bottom: 4px;" class="fs-6">{{ form.phone_number.label }}
+                          <span class="text-muted small">({{ form.phone_number.help_text }})</span>
+                      </label>
+                      {{ form.phone_number }}
+                      <div class="invalid-feedback">
+                        Phone number is required.
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <label style="margin-bottom: 4px;" class="fs-6">{{ form.address_line_1.label }}
+                          <span class="text-muted small">({{ form.address_line_1.help_text }})</span>
+                      </label>
+                      {{ form.address_line_1 }}
+                      <div class="invalid-feedback">
+                        Shipping address is required.
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <label style="margin-bottom: 4px;" class="fs-6">{{ form.address_line_2.label }}
+                          <span class="text-muted small">({{ form.address_line_2.help_text }})</span>
+                      </label>
+                      {{ form.address_line_2 }}
+                    </div>
+                    <div class="col-md-4 d-inline-block">
+                      <label style="margin-bottom: 4px;" class="fs-6">{{ form.country.label }}
+                          <span class="text-muted small">(Required)</span>
+                      </label>
+                      {{ form.country }}
+                      <div class="invalid-feedback">
+                        Country is required.
+                      </div>
+                    </div>
+                    <div class="col-md-4 d-inline-block">
+                      <label style="margin-bottom: 4px;" class="fs-6">{{ form.city.label }}
+                          <span class="text-muted small">({{ form.city.help_text }})</span>
+                      </label>
+                      {{ form.city }}
+                      <div class="invalid-feedback">
+                        City is required.
+                      </div>
+                    </div>
+                    <div class="col-md-4 d-inline-block">
+                      <label style="margin-bottom: 4px;" class="fs-6">{{ form.postcode.label }}
+                          <span class="text-muted small">({{ form.postcode.help_text }})</span>
+                      </label>
+                      {{ form.postcode }}
+                      <div class="invalid-feedback">
+                        Zip code is required.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <h4 class="mb-4">Payment</h4>
+                <label style="margin-bottom: 4px;" class="fs-6" for="card-element">Credit or debit card</label>
+                <div id="card-element" class="form-control form-control-payment">
+                  <!-- Payment elements will appear here -->
+                </div>
+                <button id="submit" style="margin-top: 30px; background-color: #563050; color: white; border-radius: 45px;" class="btn py-2 w-100 fw-bold" data-secret="{{ client_secret }}">Pay</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  {% comment %} Make csrf token availble in JS files {% endcomment %}
+  var CSRF_TOKEN = '{{ csrf_token }}';
+  var STRIPE_PUBLISHABLE_KEY = '{{ STRIPE_PUBLISHABLE_KEY }}'
+</script>
+<script src="https://js.stripe.com/v3/"></script>
+<script src="{% static 'payment/index.js' %}" data-rel-js></script>
+
+{% endblock %}

@@ -1,0 +1,139 @@
+{% extends "../base.html" %}
+{% load static %}
+{% block title %}Basket Summary{% endblock %}
+{% block content %}
+
+  <style>
+      .container {
+        color: #563050;
+      }
+  </style>
+  <main class="container">
+    <div style="margin-bottom: 32px" class="margin-top-50 mx-4">
+      <div class="d-flex m-4 justify-content-center">
+        <h3 style="font-weight: bold;">Shopping cart</h3>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <table class="table table-borderless">
+            <thead class="sticky-top">
+              <tr style="border-bottom: 3px solid #563050;">
+                <th class="ps-0 py-3 col-7 h4" style="color: #563050;">Your total is: <span id="subtotal" class="fw-bold">${{ basket.get_total_price }}</span></th>
+                <th class="py-3 pe-0 text-muted text-end col"><a role="button" href="{% url 'payment:basket' %}" class="btn fw-bold px-3" style="background-color: #563050; color: white; border-radius: 45px;" type="button">ORDER NOW</a></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in basket %}
+              {% with product=item.product %}
+              <tr data-index="{{ product.id }}" class="product-item" style="border-top: 1px solid rgba(86, 48, 80, 0.3)">
+                <td class="ps-0 py-3 col-7">
+                  <div class="d-flex">
+                    <a href="{{ product.get_absolute_url }}" class="w-25 me-4">
+                      <img src="{{ product.image.url }}" alt="Product Image" class="w-100">
+                    </a>
+                    <div class="d-flex flex-column">
+                      <h5 class="m-0 fw-bold" style="color: #563050;">{{ product.title }}</h5>
+                      <p style="font-size: 0.85rem; color: #563050;" class="my-2">{{ product.memory }} GB, {{ product.storage }} GB, {{ product.screen }}, {{ product.processor }}, {{ product.os }}, {{ product.battery }} mAh </p>
+                      <div class="d-flex align-items-start mt-2">
+                        <div class="input-group input-group-sm w-50 me-1">
+                          <button data-index="{{ product.id }}" class="input-group-text update-delete-by-one-button"><svg class="bi bi-dash" width="16" height="16"><use xlink:href="#minus"/></svg></button>
+                          <input type="text" id="product-qty{{ product.id }}" style="cursor: default;" class="form-control text-center" value="{{ item.qty }}" readonly>
+                          <button data-index="{{ product.id }}" class="input-group-text update-add-by-one-button"><svg class="bi bi-plus" width="16" height="16"><use xlink:href="#plus"/></svg></button>
+                        </div>
+                        <div class="m-1">
+                          <p data-index="{{ product.id }}" style="font-size: 0.85rem; text-decoration: underline; cursor: pointer; color: #563050;" class="delete-from-basket-button">Delete</p>
+                        </div>
+                      </div>
+                      <div class="m-0">
+                        <p class="mb-0" style="color: #563050;">${{ product.price }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td class="py-3 pe-0 col text-end" style="text-align: end; vertical-align: middle;">
+                  <p class="my-auto fw-bold h5">
+                    <span style="color: #563050;" id="product-price{{ product.id }}">${{ item.total_price }}</span>
+                  </p>
+                </td>
+              </tr>
+              {% endwith %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    $(document).on('click', '.delete-from-basket-button', function (e) {
+        e.preventDefault();
+        var prodid = $(this).data('index');
+        $.ajax({
+            type: 'POST',
+            url: '{% url "store_basket:basket_delete" %}',
+            data: {
+                productid: $(this).data('index'),
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                action: 'delete'
+            },
+            success: function (json) {
+              $('.product-item[data-index="' + prodid + '"]').remove();
+              document.getElementById("basket-qty").innerHTML = json.qty
+              document.getElementById("subtotal").innerHTML = json.subtotal
+            },
+            error: function (xhr, errmsg, err) {}
+        });
+    })
+
+    $(document).on('click', '.update-add-by-one-button', function (e) {
+      e.preventDefault();
+      var prodid = $(this).data('index');
+      $.ajax({
+          type: 'POST',
+          url: '{% url "store_basket:basket_update" %}',
+          data: {
+              productid: $(this).data('index'),
+              productqty: 1,
+              csrfmiddlewaretoken: "{{csrf_token}}",
+              action: 'post'
+          },
+          success: function (json) {
+            document.getElementById("basket-qty").innerHTML = json.qty
+            document.getElementById("subtotal").innerHTML = json.subtotal
+            document.getElementById("product-price" + prodid).innerHTML = json.productprice
+            document.getElementById("product-qty" + prodid).value = json.productqty
+          },
+          error: function (xhr, errmsg, err) {}
+      });
+  })
+
+  $(document).on('click', '.update-delete-by-one-button', function (e) {
+    e.preventDefault();
+    var prodid = $(this).data('index');
+    $.ajax({
+        type: 'POST',
+        url: '{% url "store_basket:basket_update" %}',
+        data: {
+            productid: $(this).data('index'),
+            productqty: 1,
+            csrfmiddlewaretoken: "{{csrf_token}}",
+            action: 'delete'
+        },
+        success: function (json) {
+          document.getElementById("basket-qty").innerHTML = json.qty
+          document.getElementById("subtotal").innerHTML = json.subtotal
+
+          if (json.productqty > 0 && json.productprice > 0) {
+            document.getElementById("product-qty" + prodid).value = json.productqty
+            document.getElementById("product-price" + prodid).innerHTML = json.productprice
+          }else {
+            $('.product-item[data-index="' + prodid + '"]').remove();
+          }
+        },
+        error: function (xhr, errmsg, err) {}
+    });
+})
+</script>
+
+{% endblock %}

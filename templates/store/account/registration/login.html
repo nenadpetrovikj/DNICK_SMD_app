@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <title>Log In</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    </head>
+
+    <style>
+
+        .container-fluid {
+            color: #563050;
+        }
+    
+        .account-form input:focus {
+            border-color: #1497ff;
+            box-shadow: none;
+        }
+
+        .form-control {
+            border: 1px solid #563050;
+            border-radius: 5px;
+        }
+
+        .centered {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+    </style>
+
+    <body>
+        <div class="container-fluid">
+            <div style="height: 100vh; overflow-y: hidden;" class="row">
+                <div style="padding-right: 0px; overflow-y: scroll;" class="col-5 h-100">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-lg-7">
+                                <form class="d-flex flex-column account-form p-4 rounded col-lg-10 mx-auto align-items-center" action="{% url 'account:login' %}" method="post">
+                                    
+                                    <div style="margin-top: -150; margin-bottom: -50px;">
+                                        <img src="{% static 'store/images/smd-logo.png' %}" alt="Logo" height="325x">
+                                    </div>
+                                    
+                                    {% csrf_token %}
+                                    <div class="mt-0">
+                                        <h4 class="mb-5" style="font-weight: bold;">LOG IN</h4>
+                                    </div>
+    
+                                    {% if form.errors %}
+                                    <div class="alert alert-primary" role="alert">
+                                        Error: Username, Password or both are not correct!
+                                    </div>
+                                    {% endif %}
+    
+                                    <label class="form-label">{{ form.username.label}}</label>
+                                    {{ form.username}}
+    
+                                    <label class="form-label">{{ form.password.label}}</label>
+                                    {{ form.password}}
+
+                                    <div class="text-end my-4">
+                                        <!-- <a class="link-underline link-underline-opacity-0" href="{% url "account:pwdreset" %}">
+                                            <span class="small" style="color: #563050; text-decoration: underline;">Forgot password?</span>
+                                        </a> -->
+                                    </div>
+
+                                    <div class="d-grid gap-2 w-100">
+                                        <input type="hidden" name="next" value="{{ next }}">
+                                        <button class="btn py-2 mb-4 fw-bold" style="background-color: #563050; color: white; border-radius: 45px;" type="submit" value="Log-in">LOG IN</button>
+                                    </div>
+                                    <p class="text-center pb-3">
+                                        Don't have an account? Register <a href="{% url "account:register" %}" style="font-weight: bold; color: #563050;">here</a>.
+                                    </p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding-left: 0px; position: relative;" class="col-7 h-100 p-0">
+                    <img style="object-fit: cover;" src="{% static 'store/images/apple-setup-v3.jpg' %}" class="img-fluid h-100 w-100" alt="">
+                    <div class="centered">Welcome back.</div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+</html>

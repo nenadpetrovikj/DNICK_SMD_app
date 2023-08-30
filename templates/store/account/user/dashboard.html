@@ -1,0 +1,84 @@
+{% extends "../../base.html" %}
+{% load static %}
+{% block title %}Dashboard{%endblock %}
+{% block content %}
+<main class="pt-2">
+    <div class="container text-center" style="max-width: 1000px">
+        <div class="col-12">
+            <h3 class="fw-bold mb-5" style="color: #563050;">Your Dashboard</h3>
+        </div>
+        <div class="col-12 mb-3" style="color: #563050;">
+            {% if user.is_superuser %}
+            <div>You are logged in with the username: <b>{{ user }}</b>. This is a <b>superuser</b> account.</div>
+            {% else %}
+            <div>Manage your <b>orders</b> and personal details</div>
+            <div><a href="{% url "account:edit_details" %}" style="color: #563050;">Change Details</a></div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="container" style="max-width: 1000px; color: #563050;">
+        {% if not user.is_superuser %}
+        {% for order in orders %}
+            <div class="col-12 p-3 d-flex mb-3" style="border-bottom: 1px solid #563050; border-top: 1px solid #563050;">
+                <div class="flex-grow-1 d-flex">
+                    <div class="me-4">{{ order.created }}</div>
+                    <div class="dropdown">
+                        <a class="text-reset text-decoration-none dropdown-toggle" href="#" role="link" id="dropdownLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        Dispatched to 
+                        </a>
+
+                        <ul class="dropdown-menu" aria-labelledby="dropdownLink">
+                            <li class="dropdown-item small"><span class="fw-bold" style="color: #563050;">Full name: </span>{{order.full_name}}</li>
+                            <li class="dropdown-item small"><span class="fw-bold" style="color: #563050;">Country: </span>{{order.country}}</li>
+                            <li class="dropdown-item small"><span class="fw-bold" style="color: #563050;">City: </span>{{order.city}}</li>
+                            <li class="dropdown-item small"><span class="fw-bold" style="color: #563050;">Street name and civic number: </span>{{order.address1}}</li>
+                            <li class="dropdown-item small"><span class="fw-bold" style="color: #563050;">Apartment number: </span>{{order.address2}}</li>
+                            <li class="dropdown-item small"><span class="fw-bold" style="color: #563050;">Postal code: </span>{{order.post_code}}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="color: #563050;">Total paid: <span class="fw-bold">€{{ order.total_paid }}</span></div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-7 col-lg-8">
+
+                    <div class="row">
+                        {% for item in order.items.all %}
+        
+                        <div class="col-4 mb-3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <a class="d-inline-block w-100 h-100" href="{{ item.product.get_absolute_url }}">
+                                        <img class="img-fluid w-100" src="{{item.product.image.url}}" />
+                                    </a>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="py-2 d-flex flex-column">
+                                        <h6 class="mb-2">{{item.product|title}}</h6>
+                                        <p class="small mb-2">Quantity: {{item.quantity}}</p>
+                                        <p class="small m-0 fw-bold">{{item.price}} €</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="col-md-5 col-lg-4">
+                    <div class="d-flex flex-column">
+                        <button class="btn mb-2" style="background-color: #563050; color: white; border-radius: 45px;" type="button">Problem with order</button>
+                        <button class="btn btn-light" style="border: #563050 solid 1px; border-radius: 45px;" type="button">Leave a review</button>
+                    </div>
+                </div>
+
+            </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <title>Registration</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    </head>
+
+    <style>
+        
+        .container-fluid {
+            color: #563050;
+        }
+    
+        .account-form input:focus {
+            border-color: #1497ff;
+            box-shadow: none;
+        }
+
+        .form-control {
+            border: 1px solid #563050;
+            border-radius: 5px;
+        }
+
+        .centered {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+        }
+    </style>
+
+    <body>
+        <div class="container-fluid">
+            <div style="height: 100vh; overflow-y: hidden;" class="row">
+                <div style="padding-right: 0px; overflow-y: scroll;" class="col-5 h-100">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-lg-7">
+                                <form class="d-flex flex-column account-form p-4 rounded col-lg-10 mx-auto align-items-center" action="." method="post">
+                                    {% csrf_token %}
+                                    <div style="margin-top: -150; margin-bottom: -50px;">
+                                        <img src="{% static 'store/images/smd-logo.png' %}" alt="Logo" height="325x">
+                                    </div>
+                                    
+                                    <div class="mt-0">
+                                        <h4 class="mb-5">REGISTER AN ACCOUNT</h4>
+                                    </div>
+                                    {% if form.errors %}
+                                    <p>Please correct the following errors:</p>
+                                    {% for field in form %}
+                                    {% if field.errors %}
+                                    <div class="alert alert-primary" role="alert">
+                                        {{ field.label }}: {{ field.errors|striptags }}
+                                    </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% endif %}
+    
+                                    <label>{{ form.username.label }}<span class="text-muted small">
+                                            ({{ form.username.help_text }})</span></label>
+                                    {{ form.username }}
+                                    <label>{{ form.email.label}}<span class="text-muted small">
+                                            ({{ form.email.help_text }})</span></label>
+                                    {{ form.email }}
+                                    <label>{{ form.password.label}}<span class="text-muted small">
+                                        ({{ form.password.help_text }})</span></label>
+                                    {{ form.password }}
+                                    <label>{{ form.password2.label}}<span class="text-muted small">
+                                        ({{ form.password2.help_text }})</span></label>
+                                    {{ form.password2 }}
+                                    <button class="btn btn-block py-2 my-4 fw500 w-100" style="background-color: #563050; color: white; border-radius: 45px; font-weight: bold;" type="submit">CREATE ACCOUNT</button>
+                                    <p class="text-center">
+                                        Already have an account? Log in <a href="{% url "account:login" %}" style="color: #563050; font-weight: bold;">here</a>.
+                                    </p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding-left: 0px; position: relative;" class="col-7 h-100 p-0">
+                    <img style="object-fit: cover;" src="{% static 'store/images/apple-setup-v3.jpg' %}" class="img-fluid h-100 w-100" alt="">
+                    <div class="centered">The perfect setup you have been looking for.</div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+</html>

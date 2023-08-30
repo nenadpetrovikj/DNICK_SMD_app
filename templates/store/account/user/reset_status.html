@@ -1,0 +1,50 @@
+{% extends "../../base.html" %}
+{% block title %}Status{% endblock %}
+{% block content %}
+
+<style>
+    .container-fluid {
+        max-width: 100%;
+    }
+
+    .account-form input {
+        border: 2px solid #ccc;
+        height: calc(2em + .75rem + 2px);
+    }
+
+    .account-form input:focus {
+        border-color: #1497ff;
+        box-shadow: none;
+    }
+</style>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="d-flex align-items-center py-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 col-lg-6  mx-auto">
+                            <div class="text-center" style="color: #563050;">
+                                {% if 'register' in request.get_full_path %}
+                                        <h3 class="mb-4">Registered Successfully</h3>
+                                        <p>A link to activate your account has been sent to your email address.</p>
+                                {% endif%}
+                                {% if 'password_reset_email_confirm' in request.get_full_path %}
+                                        <h3 class="mb-4">Password Reset Success</h3>
+                                        <p>Check your email for instructions</p>
+                                {% endif%}
+                                {% if 'password_reset_complete' in request.get_full_path %}
+                                        <h3 class="mb-4">Password Reset Success</h3>
+                                        <p>Now you can login with your new password</p>
+                                {% endif%}
+                            </div>       
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

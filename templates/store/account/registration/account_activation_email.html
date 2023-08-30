@@ -1,0 +1,11 @@
+{% autoescape off %}
+Hello,
+
+You have successfully created an account with the email address:
+
+{{ user.email }}
+
+Click the link below to verify the email address and activate your account:
+
+http://{{ domain }}{% url 'account:activate' flag=flag uidb64=uid token=token %}
+{% endautoescape %}

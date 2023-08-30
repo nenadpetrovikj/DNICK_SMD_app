@@ -1,0 +1,186 @@
+{% extends "./base.html" %}
+{% load static %}
+{% block title %}Add a product{% endblock %}
+{% block content %}
+
+<style>
+  .account-form input {
+      border: 2px solid #ccc;
+      height: calc(2em + .75rem + 2px);
+    }
+
+  .form-control {
+    border: 2px solid #ccc;
+  }
+
+  .account-form input:focus {
+    border-color: #1497ff;
+    box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075), 0 0 0px rgba(255, 0, 0, 0.6);
+  }
+
+  .container-fluid {
+    color: #563050;
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+  label span {
+    font-weight: normal;
+  }
+
+  .form-control {
+    border: 1px solid #563050;
+    border-radius: 5px;
+  }
+</style>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="d-flex align-items-center py-5">
+        <div class="container">
+          <div class="row">
+            <div class="col-12 col-lg-6 mx-auto">
+              <h3 class="mb-2">Add Product</h3>
+              <p class="mb-4 text-muted"></p>
+
+              {% if form.errors %}
+              <p>Please correct the following errors:</p>
+              {% for field in form %}
+              {% if field.errors %}
+              <div class="alert alert-primary" role="alert">
+                {{ field.label }}: {{ field.errors|striptags }}
+              </div>
+              {% endif %}
+              {% endfor %}
+              {% endif %}
+
+              <form action="." method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row g-3">
+                  <div class="col-12">
+                    <div class="row">
+                      <label style="margin-bottom: 4px;" class="fs-6 col">{{ form.category.label }}
+                          <span class="text-muted small">({{ form.category.help_text }})</span>
+                      </label>
+                      <div class="col">{{ form.category }}</div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="row">
+                      <label style="margin-bottom: 4px;" class="fs-6 col">{{ form.title.label }}
+                          <span class="text-muted small">({{ form.title.help_text }})</span>
+                      </label>
+                      <div class="col">{{ form.title }}</div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="row">
+                      <label style="margin-bottom: 4px;" class="fs-6 col">{{ form.manufacturer.label }}
+                          <span class="text-muted small">({{ form.manufacturer.help_text }})</span>
+                      </label>
+                      <div class="col">{{ form.manufacturer }}</div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="row">
+                      <label style="margin-bottom: 4px;" class="fs-6 col">{{ form.memory.label }}
+                          <span class="text-muted small">({{ form.memory.help_text }})</span>
+                      </label>
+                      <div class="col">{{ form.memory }}</div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="row">
+                      <label style="margin-bottom: 4px;" class="fs-6 col">{{ form.storage.label }}
+                          <span class="text-muted small">({{ form.storage.help_text }})</span>
+                      </label>
+                      <div class="col">{{ form.storage }}</div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="row">
+                      <label style="margin-bottom: 4px;" class="fs-6 col">{{ form.screen.label }}
+                          <span class="text-muted small">({{ form.screen.help_text }})</span>
+                      </label>
+                      <div class="col">{{ form.screen }}</div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="row">
+                      <label style="margin-bottom: 4px;" class="fs-6 col">{{ form.processor.label }}
+                          <span class="text-muted small">({{ form.processor.help_text }})</span>
+                      </label>
+                      <div class="col">{{ form.processor }}</div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="row">
+                      <label style="margin-bottom: 4px;" class="fs-6 col">{{ form.os.label }}
+                          <span class="text-muted small">({{ form.os.help_text }})</span>
+                      </label>
+                      <div class="col">{{ form.os }}</div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="row">
+                      <label style="margin-bottom: 4px;" class="fs-6 col">{{ form.battery.label }}
+                          <span class="text-muted small">({{ form.battery.help_text }})</span>
+                      </label>
+                      <div class="col">{{ form.battery }}</div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="row">
+                      <label style="margin-bottom: 4px;" class="fs-6 col">{{ form.price.label }}
+                          <span class="text-muted small">({{ form.price.help_text }})</span>
+                      </label>
+                      <div class="col">{{ form.price }}</div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="row">
+                      <label style="margin-bottom: 4px;" class="fs-6 col">{{ form.description.label }}
+                          <span class="text-muted small">({{ form.description.help_text }})</span>
+                      </label>
+                      <div class="col">{{ form.description }}</div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="row">
+                      <label style="margin-bottom: 4px;" class="fs-6 col">{{ form.image.label }}
+                          <span class="text-muted small">({{ form.image.help_text }})</span>
+                      </label>
+                      <div class="col">{{ form.image }}</div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="row">
+                      <label style="margin-bottom: 4px;" class="fs-6 col">{{ form.slug.label }}
+                          <span class="text-muted small">({{ form.slug.help_text }}) ('-' separated)</span>
+                      </label>
+                      <div class="col">{{ form.slug }}</div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <label style="margin-bottom: 4px;" class="fs-6">{{ form.in_stock.label }}</label>
+                    {{ form.in_stock }}
+                  </div>
+                  <div class="col-12">
+                    <label style="margin-bottom: 4px;" class="fs-6">{{ form.is_active.label }}</label>
+                    {{ form.is_active }}
+                  </div>
+                  <button style="margin-top: 30px; background-color: #563050; color: white; border-radius: 45px;" class="btn py-3 w-50 mx-auto fw-bold">ADD PRODUCT</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
